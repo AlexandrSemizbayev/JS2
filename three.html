@@ -1,85 +1,87 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
+
 <body>
-<button id="stop"> STOP IT</button>
-<script>
-/* ДЗ
-доработать кофеварку
-ввести значение зерен
-проверка на пустую кофеварку
-реализовать кнопку стоп
-* время приготовления зависит от кол-ва зерен
-*/
+    <button id="stop"> STOP IT</button>
+    <script>
+    /* ДЗ
+        доработать кофеварку
+        ввести значение зерен
+        проверка на пустую кофеварку
+        реализовать кнопку стоп
+        * время приготовления зависит от кол-ва зерен
+        */
+    var i = 0;
 
-
-                                                                        console.info("Запуск велосипеда на костылях");
-    var i=0;
-    
     function CoffeeMachine(power) {
-      // удельная теплоемкость воды
-      const waterHeatCapacity = 4200
-      // температура воды до которой греем
-      const maxTemp = 90
-      // колличество воды в кофеварке
-      let waterAmount = 0
-      let beansAmount = 0;
+        // удельная теплоемкость воды
+        const waterHeatCapacity = 4200
+        // температура воды до которой греем
+        const maxTemp = 90
+        // колличество воды в кофеварке
+        let waterAmount = 0
+        let beansAmount = 0;
 
-      this.fill = function (newAmount) {
-        if(newAmount >= 50) {
-          waterAmount = newAmount
-        } else {
-          console.error('Слишком мало воды!')
+        this.fill = function(newAmount) {
+            if (newAmount >= 50) {
+                waterAmount = newAmount
+            } else {
+                console.error('Слишком мало воды!')
+            }
         }
-      }
-      this.beans = function (beansFill) {
-        if(beansFill <= 0) {
-          console.error('Нужно больше зерен');
-        } else {
-          beansAmount = beansFill
-          //console.log(beansAmount);                        <------------------почему тут работает???
+        this.beans = function(beansFill) {
+            if (beansFill <= 0) {
+                console.error('Нужно больше зерен');
+            } else {
+                beansAmount = beansFill
+                //console.log(beansAmount);                        TODO: changed to 10;
+            }
         }
-      }
-       const getBoilTime = function () {
-        return (waterAmount * waterHeatCapacity * maxTemp +(beansAmount * 2) ) / power ;                 //тот еще из меня кофевар.Но предположил что и так сойдет)
+        const getBoilTime = function() {
+            return (waterAmount * waterHeatCapacity * maxTemp + (beansAmount * 2)) / power; //Not sure about Math in this case;
         }
+        this.breaker = function() {
+            
+                ++i;
+                console.info("Выключили")
+            
+        }
+        this.launch = function() {
+            const time = getBoilTime();
+            if (time == 0) {
+                console.info("а вот фигушки")
+                return;
+            } else {
+                console.info(`Время ожидания: ${time}`)
+                setTimeout(function start() {
 
-      this.launch = function () {
-        const time = getBoilTime();
-        if(time==0){
-          console.info("а вот фигушки")
-          return;
-        } else {
-        console.info(`Время ожидания: ${time}`)
-        setTimeout(function start () {
-          
-          if(i>0){
-            i--;
-            return;
-          }
-          console.log('Ваш кофе готов!');
-        }, time)}
-      }
-      //console.log(beansAmount);           <------------------а тут нет!?
+                    if (i > 0) {
+                        i--;
+                        return;
+                    }
+                    console.log('Ваш кофе готов!');
+                }, time)
+            }
+        }
+        //console.log(beansAmount);          TODO:Why it's steel being zero?
     }
-                                                                    var vitek = new CoffeeMachine(3000) // Витёк
-                                                                    vitek.fill(50);
-                                                                    vitek.beans(10);
-                                                                    vitek.launch()
-                                                                    var stopIt=$('#stop');
-                                                                                            //Button
-                                                                                            
-                                                                              stopIt.bind('click', function(event) {
-                                                                                ++i;
-                                                                                console.info("Работает на совесть,бессовестная. В общем не работает уже =)")
-                                                                              });
-</script>
+    var vitek = new CoffeeMachine(3000)
+    vitek.fill(50);
+    vitek.beans(10);
+    vitek.launch()
+    $('#stop').click(function() {
+      vitek.breaker();
+    });
+
+    </script>
 </body>
+
 </html>
