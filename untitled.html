@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="ui/jquery-ui.min.js"></script>
+    <script src="script.js"></script>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Features</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Pricing</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#">Disabled</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="content">
+        <p class="par">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum blanditiis officia excepturi voluptatibus, delectus odio accusamus doloremque dolores quidem, animi labore necessitatibus eos, nihil distinctio eligendi nobis corporis voluptatem obcaecati?</p>
+        <p class="par">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veritatis, alias, perferendis. Impedit, expedita itaque dignissimos, aliquam, velit quisquam tempore architecto molestias, fuga asperiores ab accusantium consequuntur. Similique suscipit, ut excepturi!</p>
+        <p class="par">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolores quasi ipsa suscipit veritatis libero rem, est quidem voluptatibus, eius consectetur hic laboriosam. Accusantium cumque laboriosam numquam, blanditiis, deserunt quasi assumenda.</p>
+        <p class="par">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus, voluptas quas. Vel cumque, dolore nam ad porro rerum sapiente repellat. Nemo consequatur porro doloremque fugit dolorem perspiciatis, quod qui. Ipsam.</p>
+    </div>
+    <input type="text" placeholder="город" id='input'>
+    <script>
+    var data = $(".nav-link").data.value;
+    var width = $("nav").width(300)
+    $(".content p").css({ display: "none", width: "300px" });
+    for (var i = 0; i < $(".nav-link").length; i++) {
+        $(".nav-link").eq(i).on("click", { value: i }, (s) => {
+            if ($(".content p").eq(s.data.value).css({ display: "none" })) {
+                $('.content p').css({ display: "none" });
+                $('.content p').eq(s.data.value).css({ display: "flex" });
+            } else {
+                $(".content p").css({ display: "none" });
+            }
+        })
+    }
+    var arr;
+    var array = [];
+    const cities = (subject) => {
+        return fetch("http://127.0.0.1:3001/cities").then(result => {
+            return result.text();
+        }).then(text => {
+            return JSON.parse(text);
+        }).then((data) => {
+            arr = data
+            for (var i = 0; i < arr.length; i++) { array.push(arr[i].name) }
+        }).catch(err => {
+            console.log(err);
+        })
+    }
+    cities();
+
+    jQuery(document).ready(function($) {
+        $("#input").autocomplete({ source: array });
+    });
+    </script>
+</body>
+
+</html>
